@@ -1,17 +1,24 @@
 {
   "name": "natours",
+  "description": "Learning node, express and mongodb",
   "version": "1.0.0",
+  "author": "Alejandro Cen <alex96.cen@gmail.com>",
+  "license": "ISC",
+  "main": "app.js",
+  "keywords": [
+    "express",
+    "restful",
+    "mongodb",
+    "api",
+    "web"
+  ],
   "engines": {
     "node": ">=10.0.0"
   },
-  "description": "Learning node, express and mongodb",
-  "main": "app.js",
   "scripts": {
     "start": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js"
   },
-  "author": "Alejandro Cen",
-  "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
