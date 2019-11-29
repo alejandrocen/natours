@@ -7,7 +7,9 @@ const tourSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A tour must have a name'],
       unique: true,
-      trim: true
+      trim: true,
+      minlength: [10, 'A tour name must have more or equal then 10 characters'],
+      maxlength: [40, 'A tour name must have less or equal then 40 characters']
     },
     slug: String,
     duration: {
@@ -21,11 +23,16 @@ const tourSchema = new mongoose.Schema(
     difficulty: {
       type: String,
       required: [true, 'A tour must have a difficulty'],
-      enum: ['easy', 'medium', 'difficult']
+      enum: {
+        values: ['easy', 'medium', 'difficult'],
+        message: 'Difficulty is either: easy, medium or difficult'
+      }
     },
     ratingsAverage: {
       type: Number,
-      default: 4.5
+      default: 4.5,
+      min: [1, 'Rating must be above 1.0'],
+      max: [5, 'Rating must be below 5.0']
     },
     ratingsQuantity: {
       type: Number,
@@ -35,7 +42,18 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'A tour must have a price']
     },
-    priceDiscount: Number,
+    priceDiscount: {
+      type: Number,
+      validate: {
+        validator: function(value) {
+          /**
+           * Only works for new document
+           */
+          return value < this.price
+        },
+        message: 'Discount price ({VALUE}) should be below regular price'
+      }
+    },
     summary: {
       type: String,
       required: [true, 'A tour must have a summary'],
@@ -72,6 +90,9 @@ tourSchema.virtual('durationWeeks').get(function() {
   return Math.floor(this.duration / 7)
 })
 
+/**
+ * Only works in save() / create()
+ */
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true })
   next()
