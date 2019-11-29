@@ -1,6 +1,7 @@
 const fs = require('fs')
 const mongoose = require('mongoose')
 require('dotenv').config()
+
 const Tour = require('./../../models/tourModel')
 
 const uri = process.env.DB_HOST

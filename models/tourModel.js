@@ -51,6 +51,10 @@ const tourSchema = new mongoose.Schema(
       required: [true, 'A tour must have a cover image']
     },
     images: [String],
+    isSecret: {
+      type: Boolean,
+      default: false
+    },
     startDates: [Date],
     createdAt: {
       type: Date,
@@ -70,6 +74,16 @@ tourSchema.virtual('durationWeeks').get(function() {
 
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true })
+  next()
+})
+
+tourSchema.pre(/^find/, function(next) {
+  this.find({ isSecret: { $ne: true } })
+  next()
+})
+
+tourSchema.pre('aggregate', function(next) {
+  this.pipeline().unshift({ $match: { isSecret: { $ne: true } } })
   next()
 })
 
