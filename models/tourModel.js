@@ -44,11 +44,9 @@ const tourSchema = new mongoose.Schema(
     },
     priceDiscount: {
       type: Number,
+      // Only works for new document
       validate: {
         validator: function(value) {
-          /**
-           * Only works for new document
-           */
           return value < this.price
         },
         message: 'Discount price ({VALUE}) should be below regular price'
@@ -90,9 +88,7 @@ tourSchema.virtual('durationWeeks').get(function() {
   return Math.floor(this.duration / 7)
 })
 
-/**
- * Only works in save() / create()
- */
+// Only works in save() / create()
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true })
   next()
