@@ -1,7 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 
-const AppError = require('./utils/apiError')
+const AppError = require('./utils/appError')
 const globalErrorHandler = require('./utils/globalErrorHandler')
 const tourRouter = require('./routes/tourRoutes')
 const userRouter = require('./routes/userRoutes')
