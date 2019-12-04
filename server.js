@@ -1,6 +1,14 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
 
+process.on('uncaughtException', err => {
+  // eslint-disable-next-line no-console
+  console.error(`${err.name}: ${err.message}`)
+  // eslint-disable-next-line no-console
+  console.log('Uncaught exception, shutting down...')
+  process.exit(1)
+})
+
 const app = require('./app')
 
 const uri = process.env.DB_HOST
