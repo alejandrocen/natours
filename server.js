@@ -14,12 +14,22 @@ mongoose
   })
   .then(() => {
     // eslint-disable-next-line no-console
-    console.log('Connection successful!')
+    console.log('Connection successful.')
   })
 
 const port = process.env.PORT || 3000
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`Running on port: ${port}...`)
+  console.log(`Running on port: ${port}.`)
+})
+
+process.on('unhandledRejection', err => {
+  // eslint-disable-next-line no-console
+  console.error(`${err.name}: ${err.message}`)
+  // eslint-disable-next-line no-console
+  console.log('Unhandled rejection, shutting down...')
+  server.close(() => {
+    process.exit(1)
+  })
 })
